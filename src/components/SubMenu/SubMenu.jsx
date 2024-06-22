@@ -3,8 +3,21 @@ import { useGlobalContext } from "../../Context/AppContext";
 import { Link } from "react-router-dom";
 
 export default function SubMenu() {
-  const { location, page, isSubMenuOpen } = useGlobalContext();
+  const { location, page, isSubMenuOpen, setMovieQuery } = useGlobalContext();
   const subMenuRef = useRef(null);
+  function handleSubMenuLinks(name) {
+    if (name === "Top Rated") {
+      setMovieQuery("movie/top_rated");
+    } else if (name === "Popular") {
+      setMovieQuery("movie/popular");
+    } else if (name === "Now Playing") {
+      setMovieQuery("movie/now_playing");
+    } else if (name === "Upcoming") {
+      setMovieQuery("movie/upcoming");
+    } else {
+      setMovieQuery("trending/movie/day");
+    }
+  }
   useEffect(() => {
     const { center, bottom } = location;
     subMenuRef.current.style.left = `${center}px`;
@@ -24,7 +37,12 @@ export default function SubMenu() {
       {page?.links?.map(link => {
         const { id, name } = link;
         return (
-          <Link to={"/movies"} key={id} className="block hover:text-[#ff601c]">
+          <Link
+            to={"/movies"}
+            key={id}
+            onClick={() => handleSubMenuLinks(name)}
+            className="block hover:text-[#ff601c]"
+          >
             {name}
           </Link>
         );
