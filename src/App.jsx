@@ -10,7 +10,7 @@ import Movie from "./Pages/Movie";
 function App() {
   return (
     <Router>
-      <main className="bg-[#0d0d0d]">
+      <main className="bg-[#0d0d0d] min-h-screen">
         <Navbar />
         <SubMenu />
         <Routes>
