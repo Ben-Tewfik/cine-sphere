@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { key, baseURL, baseImgUrl } from "../Context/AppContext";
 import { FaEye, FaInternetExplorer } from "react-icons/fa";
@@ -9,26 +9,45 @@ import { FaLocationDot } from "react-icons/fa6";
 import { GiGraveFlowers } from "react-icons/gi";
 import { noImage } from "../../public/Images";
 import Loader from "../components/Loader/Loader";
+import Card from "../components/Card/Card";
 export default function Actor() {
   const [isLoading, setIsLoading] = useState(true);
   const [actor, setActor] = useState({});
+  const [movies, setMovies] = useState([]);
   const { id } = useParams();
-  const fetchSingleActor = async () => {
+
+  const fetchSingleActor = useCallback(async () => {
     setIsLoading(true);
     const actorURL = `${baseURL}person/${id}${key}&language=en-US`;
     try {
       const { data } = await axios(actorURL);
-      console.log(data);
       setActor(data);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
-  };
+  }, [id]);
+  const fetchActorMovies = useCallback(async () => {
+    setIsLoading(true);
+    const actorMoviesURL = `${baseURL}person/${id}/movie_credits${key}&language=en-US`;
+    try {
+      const { data } = await axios(actorMoviesURL);
+      const sortedMovies = data.cast.sort(
+        (a, b) => b.popularity - a.popularity
+      );
+      setMovies(sortedMovies);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  }, [id]);
   useEffect(() => {
     fetchSingleActor();
-  }, []);
+    fetchActorMovies();
+    window.scrollTo(0, 0);
+  }, [fetchSingleActor, fetchActorMovies]);
   const {
     biography,
     birthday,
@@ -43,8 +62,9 @@ export default function Actor() {
   if (isLoading) {
     return <Loader />;
   }
+
   return (
-    <section className="text-white min-h-screen w-[90vw] mx-auto py-10">
+    <section className="text-white min-h-screen w-[90vw] mx-auto py-10 overflow-hidden">
       <h1 className="text-4xl font-bold mb-3 md:text-6xl">{name}</h1>
       <div className="mb-8 text-md text-[#F1dac4] flex items-center gap-x-4 md:text-xl">
         <p className="capitalize ">{gender !== 1 ? "actor" : "actress"}</p>
@@ -93,13 +113,23 @@ export default function Actor() {
           )}
         </div>
       </div>
-      <div>
-        <h3 className="text-[#ff601c] text-2xl capitalize mb-4 font-bold">
-          biography
-        </h3>
-        <p className="text-lg leading-8 border-[#F1dac4] border-[1px] p-4 rounded-md">
-          {biography}
-        </p>
+      {biography && (
+        <div className="mb-8">
+          <h3 className="text-[#ff601c] text-2xl capitalize mb-4 font-bold">
+            biography
+          </h3>
+          <p className="text-lg leading-8 border-[#F1dac4] border-[1px] p-4 rounded-md">
+            {biography}
+          </p>
+        </div>
+      )}
+      <h3 className="text-[#ff601c] text-3xl capitalize mb-4 font-bold">
+        credits
+      </h3>
+      <div className="w-[90vw] mx-auto py-10 grid gap-6 grid-cols-auto-fill">
+        {movies?.slice(0, 12)?.map(movie => {
+          return <Card key={movie.id} {...movie} />;
+        })}
       </div>
     </section>
   );
