@@ -5,17 +5,9 @@ import { Link } from "react-router-dom";
 export default function SubMenu() {
   const { location, page, isSubMenuOpen, setMovieQuery } = useGlobalContext();
   const subMenuRef = useRef(null);
-  function handleSubMenuLinks(name) {
-    if (name === "Top Rated") {
-      setMovieQuery("movie/top_rated");
-    } else if (name === "Popular") {
-      setMovieQuery("movie/popular");
-    } else if (name === "Now Playing") {
-      setMovieQuery("movie/now_playing");
-    } else if (name === "Upcoming") {
-      setMovieQuery("movie/upcoming");
-    } else {
-      setMovieQuery("trending/movie/day");
+  function handleSubMenuLinks(e, name, movieLink) {
+    if (name === e.target.textContent) {
+      setMovieQuery(movieLink);
     }
   }
   useEffect(() => {
@@ -35,12 +27,12 @@ export default function SubMenu() {
       }}
     >
       {page?.links?.map(link => {
-        const { id, name } = link;
+        const { id, name, link: movieLink } = link;
         return (
           <Link
             to={"/movies"}
             key={id}
-            onClick={() => handleSubMenuLinks(name)}
+            onClick={e => handleSubMenuLinks(e, name, movieLink)}
             className="block hover:text-[#ff601c]"
           >
             {name}
