@@ -15,6 +15,7 @@ export default function AppContext({ children }) {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
+  const [trendingMovies, setTrendingMovies] = useState([]);
   const [movieQuery, setMovieQuery] = useState("trending/movie/day");
 
   // fetch Genres
@@ -44,6 +45,21 @@ export default function AppContext({ children }) {
       setIsLoading(false);
     }
   };
+  // fetch trending movies
+  const fetchTrendingMovies = async () => {
+    setIsLoading(true);
+    try {
+      const {
+        data: { results },
+      } = await axios(`https://api.themoviedb.org/3/trending/movie/day${key}`);
+
+      setTrendingMovies(results);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
   // fetchPeople
   const fetchPeople = async () => {
     setIsLoading(true);
@@ -64,6 +80,7 @@ export default function AppContext({ children }) {
   }, []);
   useEffect(() => {
     fetchMovie();
+    fetchTrendingMovies();
   }, [movieQuery]);
 
   // functions for submenu
@@ -94,6 +111,7 @@ export default function AppContext({ children }) {
         actors,
         setMovieQuery,
         isLoading,
+        trendingMovies,
       }}
     >
       {children}
