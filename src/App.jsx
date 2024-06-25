@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SubMenu from "./components/SubMenu/SubMenu";
 import Actor from "./Pages/Actor";
 import Movie from "./Pages/Movie";
+import TvShows from "./Pages/TvShows";
+import TvShow from "./Pages/TvShow";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/movies/:id" element={<Movie />} />
           <Route path="/actors" element={<Actors />} />
           <Route path="/actors/:id" element={<Actor />} />
+          <Route path="/tv-shows" element={<TvShows />} />
+          <Route path="/tv-shows/:id" element={<TvShow />} />
         </Routes>
       </main>
     </Router>
