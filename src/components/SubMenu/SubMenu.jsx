@@ -32,7 +32,7 @@ export default function SubMenu() {
         const { id, name, link: movieLink } = link;
         return (
           <Link
-            to={"/movies"}
+            to={`/${page.page}`}
             key={id}
             onClick={e => handleSubMenuLinks(e, name, movieLink, id)}
             className="block hover:text-[#ff601c]"
