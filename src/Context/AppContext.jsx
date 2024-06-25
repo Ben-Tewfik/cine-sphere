@@ -12,7 +12,7 @@ export default function AppContext({ children }) {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [location, setLocation] = useState({});
   const [page, setPage] = useState([]);
-  const [movies, setMovies] = useState([]);
+  const [data, setData] = useState([]);
   const [actors, setActors] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [movieQuery, setMovieQuery] = useState("trending/movie/day");
@@ -27,7 +27,7 @@ export default function AppContext({ children }) {
       } = await axios(
         `https://api.themoviedb.org/3/${movieQuery}${key}&with_genres=${genreId}`
       );
-      setMovies(results);
+      setData(results);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -93,12 +93,12 @@ export default function AppContext({ children }) {
         location,
         page,
         isSubMenuOpen,
-        movies,
+        data,
         actors,
         setMovieQuery,
         isLoading,
         trendingMovies,
-        setMovies,
+        setData,
         setGenreId,
       }}
     >
