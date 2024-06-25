@@ -13,31 +13,20 @@ export default function AppContext({ children }) {
   const [location, setLocation] = useState({});
   const [page, setPage] = useState([]);
   const [movies, setMovies] = useState([]);
-  const [genres, setGenres] = useState([]);
   const [actors, setActors] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [movieQuery, setMovieQuery] = useState("trending/movie/day");
-
-  // fetch Genres
-  const fetchGenre = async () => {
-    try {
-      const {
-        data: { genres },
-      } = await axios(`${baseURL}genre/movie/list${key}`);
-      setGenres(genres);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [genreId, setGenreId] = useState("");
 
   // fetch movies
-  const fetchMovie = async () => {
+  const fetchMovies = async () => {
     setIsLoading(true);
     try {
       const {
         data: { results },
-      } = await axios(`https://api.themoviedb.org/3/${movieQuery}${key}`);
-
+      } = await axios(
+        `https://api.themoviedb.org/3/${movieQuery}${key}&with_genres=${genreId}`
+      );
       setMovies(results);
       setIsLoading(false);
     } catch (error) {
@@ -75,20 +64,18 @@ export default function AppContext({ children }) {
     }
   };
   useEffect(() => {
-    fetchGenre();
     fetchPeople();
   }, []);
   useEffect(() => {
-    fetchMovie();
+    fetchMovies();
+  }, [movieQuery, genreId]);
+  useEffect(() => {
     fetchTrendingMovies();
-  }, [movieQuery]);
+  }, []);
 
   // functions for submenu
   function openSubMenu(page, coordinates) {
     const desiredPage = subMenu.find(item => item.page === page);
-    if (desiredPage.page === "Genres") {
-      desiredPage.links = genres;
-    }
     setPage(desiredPage);
     setLocation(coordinates);
     setIsSubMenuOpen(true);
@@ -105,13 +92,14 @@ export default function AppContext({ children }) {
         closeSubMenu,
         location,
         page,
-        genres,
         isSubMenuOpen,
         movies,
         actors,
         setMovieQuery,
         isLoading,
         trendingMovies,
+        setMovies,
+        setGenreId,
       }}
     >
       {children}

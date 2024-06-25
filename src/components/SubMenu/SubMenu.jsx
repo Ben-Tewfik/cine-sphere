@@ -3,9 +3,11 @@ import { useGlobalContext } from "../../Context/AppContext";
 import { Link } from "react-router-dom";
 
 export default function SubMenu() {
-  const { location, page, isSubMenuOpen, setMovieQuery } = useGlobalContext();
+  const { location, page, isSubMenuOpen, setMovieQuery, setGenreId } =
+    useGlobalContext();
   const subMenuRef = useRef(null);
-  function handleSubMenuLinks(e, name, movieLink) {
+  function handleSubMenuLinks(e, name, movieLink, id) {
+    setGenreId(id);
     if (name === e.target.textContent) {
       setMovieQuery(movieLink);
     }
@@ -32,7 +34,7 @@ export default function SubMenu() {
           <Link
             to={"/movies"}
             key={id}
-            onClick={e => handleSubMenuLinks(e, name, movieLink)}
+            onClick={e => handleSubMenuLinks(e, name, movieLink, id)}
             className="block hover:text-[#ff601c]"
           >
             {name}
