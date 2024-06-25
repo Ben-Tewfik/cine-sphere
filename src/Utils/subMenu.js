@@ -1,6 +1,6 @@
 export const subMenu = [
   {
-    page: "Movies",
+    page: "movies",
     links: [
       { id: 1, name: "Top Rated", link: "movie/top_rated" },
       { id: 2, name: "Latest", link: "trending/movie/day" },
@@ -10,7 +10,7 @@ export const subMenu = [
     ],
   },
   {
-    page: "Genres",
+    page: "genres",
     links: [
       {
         id: 28,
@@ -110,13 +110,13 @@ export const subMenu = [
     ],
   },
   {
-    page: "TV-Series",
+    page: "tv-shows",
     links: [
-      { id: 1, name: "Top Rated" },
-      { id: 2, name: "Latest" },
-      { id: 3, name: "Popular" },
-      { id: 4, name: "Now Playing" },
-      { id: 5, name: "Upcoming" },
+      { id: 1, name: "Top Rated", link: "tv/top_rated" },
+      { id: 2, name: "Latest", link: "trending/tv/day" },
+      { id: 3, name: "Popular", link: "tv/popular" },
+      { id: 4, name: "Now Playing", link: "tv/airing_today" },
+      { id: 5, name: "Upcoming", link: "tv/on_the_air" },
     ],
   },
 ];
