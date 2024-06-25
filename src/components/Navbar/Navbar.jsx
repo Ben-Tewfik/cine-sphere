@@ -35,14 +35,23 @@ export default function Navbar() {
           <li>
             <Link to={"/"}>Home</Link>
           </li>
-          <li onMouseOver={displaySubMenu} className="link cursor-default">
-            Genres
+          <li
+            onMouseOver={displaySubMenu}
+            className="link cursor-default capitalize"
+          >
+            genres
           </li>
-          <li onMouseOver={displaySubMenu} className="link cursor-default">
-            Movies
+          <li
+            onMouseOver={displaySubMenu}
+            className="link cursor-default capitalize"
+          >
+            movies
           </li>
-          <li onMouseOver={displaySubMenu} className="link cursor-default">
-            TV-Series
+          <li
+            onMouseOver={displaySubMenu}
+            className="link cursor-default capitalize"
+          >
+            tv-shows
           </li>
           <li>
             <Link to={"/actors"}>Actors</Link>
