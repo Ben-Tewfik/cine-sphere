@@ -3,7 +3,8 @@ import { FaBars } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { useGlobalContext } from "../../Context/AppContext";
 export default function Navbar() {
-  const { openSubMenu, closeSubMenu } = useGlobalContext();
+  const { openSubMenu, closeSubMenu, searchWord, setSearchWord } =
+    useGlobalContext();
   function displaySubMenu(e) {
     const text = e.target.textContent;
     const position = e.target.getBoundingClientRect();
@@ -63,6 +64,8 @@ export default function Navbar() {
         >
           <input
             type="search"
+            value={searchWord}
+            onChange={e => setSearchWord(e.target.value)}
             className="py-2 pl-2 pr-10 rounded-md focus:outline-none "
             placeholder="Search..."
           />

@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { subMenu } from "../Utils/subMenu";
 const AppProvider = createContext();
 // const key = `${import.meta.env.REACT_APP_API_KEY}`;
@@ -17,6 +23,10 @@ export default function AppContext({ children }) {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [movieQuery, setMovieQuery] = useState("trending/movie/day");
   const [genreId, setGenreId] = useState("");
+  const [searchWord, setSearchWord] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
 
   // fetch movies
   const fetchMovies = async () => {
@@ -63,9 +73,28 @@ export default function AppContext({ children }) {
       setIsLoading(false);
     }
   };
+  // fetch search array
+  const fetchSearchMulti = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const {
+        data: { results },
+      } = await axios(searchUrl);
+      setSearchResults(results);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  }, [searchUrl]);
+  useEffect(() => {
+    fetchSearchMulti();
+  }, [fetchSearchMulti]);
   useEffect(() => {
     fetchPeople();
+    fetchSearchMulti();
   }, []);
+
   useEffect(() => {
     fetchMovies();
   }, [movieQuery, genreId]);
@@ -100,6 +129,9 @@ export default function AppContext({ children }) {
         trendingMovies,
         setData,
         setGenreId,
+        setSearchWord,
+        searchWord,
+        searchResults,
       }}
     >
       {children}
