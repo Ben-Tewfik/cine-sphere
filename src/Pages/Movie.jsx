@@ -23,7 +23,6 @@ export default function Movie() {
     setIsLoading(true);
     try {
       const { data } = await axios(movieUrl);
-      console.log(data);
       setMovie(data);
       setIsLoading(false);
     } catch (error) {
@@ -65,7 +64,10 @@ export default function Movie() {
     setIsLoading(true);
     try {
       const { data } = await axios(similarMoviesUrl);
-      setSimilarMovies(data.results);
+      const topSimilarMovies = data.results.sort(
+        (a, b) => b.popularity - a.popularity
+      );
+      setSimilarMovies(topSimilarMovies);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -168,7 +170,7 @@ export default function Movie() {
               const { id, name } = item;
               return (
                 <li key={`${id}${name}`} className="capitalize">{`${name}${
-                  index === lang.length - 1 ? "" : ","
+                  index === production_countries.length - 1 ? "" : ","
                 }`}</li>
               );
             })}
