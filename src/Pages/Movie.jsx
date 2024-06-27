@@ -116,7 +116,7 @@ export default function Movie() {
           <span className="bg-[#ff601c] w-1 h-5 rounded-md"></span>
           <h5 className="flex items-center gap-1">
             <FaStar className="text-[#ff601c]" />
-            <span className="font-bold">{vote.toFixed(1)}</span>/10 -{" "}
+            <span className="font-bold">{vote?.toFixed(1)}</span>/10 -{" "}
             {vote_count} votes
           </h5>
         </div>
