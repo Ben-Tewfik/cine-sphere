@@ -8,6 +8,8 @@ import Actor from "./Pages/Actor";
 import Movie from "./Pages/Movie";
 import TvShows from "./Pages/TvShows";
 import TvShow from "./Pages/TvShow";
+import SearchResults from "./components/SearchResults/SearchResults";
+import Genres from "./Pages/Genres";
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <main className="bg-[#0d0d0d] min-h-screen">
         <Navbar />
         <SubMenu />
+        <SearchResults />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
@@ -23,6 +26,7 @@ function App() {
           <Route path="/actors/:id" element={<Actor />} />
           <Route path="/tv-shows" element={<TvShows />} />
           <Route path="/tv-shows/:id" element={<TvShow />} />
+          <Route path="/genres" element={<Genres />} />
         </Routes>
       </main>
     </Router>
