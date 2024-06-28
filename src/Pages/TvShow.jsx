@@ -154,7 +154,7 @@ export default function TvShow() {
               const { id, name } = genre;
               return (
                 <li key={id}>{`${name}${
-                  index === genres.length - 1 ? "" : ","
+                  index === genres?.length - 1 ? "" : ","
                 }`}</li>
               );
             })}
@@ -182,14 +182,14 @@ export default function TvShow() {
               const { name } = item;
               return (
                 <li key={`${name}`} className="capitalize">{`${name}${
-                  index === production_countries.length - 1 ? "" : ","
+                  index === production_countries?.length - 1 ? "" : ","
                 }`}</li>
               );
             })}
           </ul>
           <div className="flex gap-1 mb-4">
             <h3 className="text-[#ff601c] font-bold">Seasons:</h3>
-            <p>{seasons.length - 1}</p>
+            <p>{seasons?.length - 1}</p>
           </div>
           <h3 className="text-[#ff601c] font-bold mb-4">
             Production Companies:
