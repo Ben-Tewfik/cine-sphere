@@ -15,12 +15,13 @@ export default function AppContext({ children }) {
   const [data, setData] = useState([]);
   const [actors, setActors] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
-  const [movieQuery, setMovieQuery] = useState("trending/movie/day");
   const [genreId, setGenreId] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchList, setShowSearchList] = useState(true);
   const [miniSearch, setMiniSearch] = useState([]);
+  const [dataType, setDataType] = useState("movie");
+  const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
 
   // fetch movies
@@ -45,7 +46,9 @@ export default function AppContext({ children }) {
     try {
       const {
         data: { results },
-      } = await axios(`https://api.themoviedb.org/3/trending/movie/day${key}`);
+      } = await axios(
+        `https://api.themoviedb.org/3/trending/${dataType}/day${key}`
+      );
 
       setTrendingMovies(results);
       setIsLoading(false);
@@ -108,7 +111,7 @@ export default function AppContext({ children }) {
   }, [movieQuery, genreId]);
   useEffect(() => {
     fetchTrendingMovies();
-  }, []);
+  }, [dataType]);
 
   // functions for submenu
   function openSubMenu(page, coordinates) {
@@ -153,6 +156,8 @@ export default function AppContext({ children }) {
         fetchSearchMulti,
         miniSearch,
         setMiniSearch,
+        dataType,
+        setDataType,
       }}
     >
       {children}
