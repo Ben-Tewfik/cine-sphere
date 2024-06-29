@@ -10,6 +10,7 @@ import TvShows from "./Pages/TvShows";
 import TvShow from "./Pages/TvShow";
 import SearchResults from "./components/SearchResults/SearchResults";
 import Genres from "./Pages/Genres";
+import Search from "./Pages/Search";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/tv-shows" element={<TvShows />} />
           <Route path="/tv-shows/:id" element={<TvShow />} />
           <Route path="/genres" element={<Genres />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </main>
     </Router>
