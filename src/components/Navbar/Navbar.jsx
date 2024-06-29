@@ -3,8 +3,15 @@ import { FaBars } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { useGlobalContext } from "../../Context/AppContext";
 export default function Navbar() {
-  const { openSubMenu, closeSubMenu, searchWord, setSearchWord } =
-    useGlobalContext();
+  const {
+    openSubMenu,
+    closeSubMenu,
+    searchWord,
+    setSearchWord,
+    hideSearchResults,
+    setShowSearchList,
+    fetchSearchMulti,
+  } = useGlobalContext();
   function displaySubMenu(e) {
     const text = e.target.textContent;
     const position = e.target.getBoundingClientRect();
@@ -25,7 +32,11 @@ export default function Navbar() {
       {/* nav center */}
       <div className="w-[90vw] mx-auto flex justify-between py-6">
         {/* logo */}
-        <Link to={"/"} className="font-black text-[#ff601c] text-3xl">
+        <Link
+          to={"/"}
+          onClick={hideSearchResults}
+          className="font-black text-[#ff601c] text-3xl"
+        >
           CineSphere
         </Link>
         <button className="text-3xl text-[#F1dac4] hover:text-[#ff601c] transition duration-300 ease-in-out md:hidden">
@@ -60,16 +71,23 @@ export default function Navbar() {
         </ul>
         <form
           className="hidden md:block relative self-center"
-          onSubmit={e => e.preventDefault()}
+          onSubmit={e => {
+            e.preventDefault();
+            fetchSearchMulti();
+          }}
         >
           <input
             type="search"
             value={searchWord}
             onChange={e => setSearchWord(e.target.value)}
+            onFocus={() => setShowSearchList(true)}
             className="py-2 pl-2 pr-10 rounded-md focus:outline-none "
             placeholder="Search..."
           />
-          <button className="absolute top-[50%] -translate-y-1/2 right-3">
+          <button
+            type="submit"
+            className="absolute top-[50%] -translate-y-1/2 right-3"
+          >
             <FaSearch />
           </button>
         </form>
