@@ -1,11 +1,5 @@
 import axios from "axios";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { subMenu } from "../Utils/subMenu";
 const AppProvider = createContext();
 // const key = `${import.meta.env.REACT_APP_API_KEY}`;
@@ -25,7 +19,8 @@ export default function AppContext({ children }) {
   const [genreId, setGenreId] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  const [showSearchList, setShowSearchList] = useState(true);
+  const [miniSearch, setMiniSearch] = useState([]);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
 
   // fetch movies
@@ -74,7 +69,7 @@ export default function AppContext({ children }) {
     }
   };
   // fetch search array
-  const fetchSearchMulti = useCallback(async () => {
+  const fetchSearchMulti = async () => {
     setIsLoading(true);
     try {
       const {
@@ -86,13 +81,26 @@ export default function AppContext({ children }) {
       console.error(error);
       setIsLoading(false);
     }
-  }, [searchUrl]);
+  };
+  const fetchMiniSearchMulti = async () => {
+    setIsLoading(true);
+    try {
+      const {
+        data: { results },
+      } = await axios(searchUrl);
+      setMiniSearch(results);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    fetchSearchMulti();
-  }, [fetchSearchMulti]);
+    fetchMiniSearchMulti();
+  }, [searchUrl]);
+
   useEffect(() => {
     fetchPeople();
-    fetchSearchMulti();
   }, []);
 
   useEffect(() => {
@@ -114,6 +122,12 @@ export default function AppContext({ children }) {
   }
   // end functions for submenu
 
+  // hide search results
+  function hideSearchResults() {
+    if (showSearchList) {
+      setShowSearchList(false);
+    }
+  }
   return (
     <AppProvider.Provider
       value={{
@@ -132,6 +146,13 @@ export default function AppContext({ children }) {
         setSearchWord,
         searchWord,
         searchResults,
+        showSearchList,
+        setShowSearchList,
+        hideSearchResults,
+        setSearchResults,
+        fetchSearchMulti,
+        miniSearch,
+        setMiniSearch,
       }}
     >
       {children}
