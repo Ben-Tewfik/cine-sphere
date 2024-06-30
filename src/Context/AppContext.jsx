@@ -1,5 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { subMenu } from "../Utils/subMenu";
 const AppProvider = createContext();
 // const key = `${import.meta.env.REACT_APP_API_KEY}`;
@@ -22,8 +28,10 @@ export default function AppContext({ children }) {
   const [miniSearch, setMiniSearch] = useState([]);
   const [dataType, setDataType] = useState("movie");
   const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
+  const [mostPopularMovieId, setMostPopularMovieId] = useState("");
+  const [video, setVideo] = useState({});
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
-
+  const videoUrl = `${baseURL}movie/${mostPopularMovieId}/videos${key}&language=en-US`;
   // fetch movies
   const fetchMovies = async () => {
     setIsLoading(true);
@@ -51,12 +59,34 @@ export default function AppContext({ children }) {
       );
 
       setTrendingMovies(results);
+      const latestMovies = results?.sort((a, b) => b.popularity - a.popularity);
+      setMostPopularMovieId(latestMovies[0]?.id);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
   };
+  // fetch most popular movie video
+  const fetchMostPopularMovieVideo = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const data = mostPopularMovieId && (await axios(videoUrl));
+      const videoArr = data?.data?.results;
+      const videoTrailer = videoArr?.find(
+        video =>
+          video.name.toLowerCase().includes("trailer") &&
+          video.type === "Trailer"
+      );
+
+      setVideo(videoTrailer);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
+  }, [videoUrl, mostPopularMovieId]);
+
   // fetchPeople
   const fetchPeople = async () => {
     setIsLoading(true);
@@ -98,6 +128,9 @@ export default function AppContext({ children }) {
       setIsLoading(false);
     }
   };
+  useEffect(() => {
+    fetchMostPopularMovieVideo();
+  }, [fetchMostPopularMovieVideo]);
   useEffect(() => {
     fetchMiniSearchMulti();
   }, [searchUrl]);
@@ -158,6 +191,8 @@ export default function AppContext({ children }) {
         setMiniSearch,
         dataType,
         setDataType,
+        setMostPopularMovieId,
+        video,
       }}
     >
       {children}
