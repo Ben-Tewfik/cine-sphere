@@ -29,9 +29,8 @@ export default function AppContext({ children }) {
   const [dataType, setDataType] = useState("movie");
   const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
   const [mostPopularMovieId, setMostPopularMovieId] = useState("");
-  const [video, setVideo] = useState({});
+  const [mostPopularMovies, setMostPopularMovies] = useState([]);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
-  const videoUrl = `${baseURL}movie/${mostPopularMovieId}/videos${key}&language=en-US`;
   // fetch movies
   const fetchMovies = async () => {
     setIsLoading(true);
@@ -59,33 +58,29 @@ export default function AppContext({ children }) {
       );
 
       setTrendingMovies(results);
-      const latestMovies = results?.sort((a, b) => b.popularity - a.popularity);
-      setMostPopularMovieId(latestMovies[0]?.id);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
   };
-  // fetch most popular movie video
-  const fetchMostPopularMovieVideo = useCallback(async () => {
+  // // fetch most popular movie
+  const fetchMostPopularMovies = async () => {
     setIsLoading(true);
     try {
-      const data = mostPopularMovieId && (await axios(videoUrl));
-      const videoArr = data?.data?.results;
-      const videoTrailer = videoArr?.find(
-        video =>
-          video.name.toLowerCase().includes("trailer") &&
-          video.type === "Trailer"
-      );
-
-      setVideo(videoTrailer);
+      const {
+        data: { results },
+      } = await axios(`https://api.themoviedb.org/3/trending/movie/day${key}`);
+      const topMovies = results
+        .sort((a, b) => b.popularity - a.popularity)
+        .slice(0, 8);
+      setMostPopularMovies(topMovies);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
-  }, [videoUrl, mostPopularMovieId]);
+  };
 
   // fetchPeople
   const fetchPeople = async () => {
@@ -129,8 +124,8 @@ export default function AppContext({ children }) {
     }
   };
   useEffect(() => {
-    fetchMostPopularMovieVideo();
-  }, [fetchMostPopularMovieVideo]);
+    fetchMostPopularMovies();
+  }, []);
   useEffect(() => {
     fetchMiniSearchMulti();
   }, [searchUrl]);
@@ -191,8 +186,7 @@ export default function AppContext({ children }) {
         setMiniSearch,
         dataType,
         setDataType,
-        setMostPopularMovieId,
-        video,
+        mostPopularMovies,
       }}
     >
       {children}
