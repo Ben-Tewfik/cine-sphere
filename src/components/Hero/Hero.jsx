@@ -71,9 +71,9 @@ export default function Hero() {
                     </p>
                     <Link
                       to={`/movies/${id}`}
-                      className="hidden md:bg-[#ff601c] md:block md:py-1 md:px-4 md:w-20 md:rounded-md"
+                      className="hidden md:bg-[#ff601c] md:block md:py-1 md:px-4 md:w-32 hover:text-[#ff601c] hover:bg-transparent hover:transition-all hover:duration-300 border-2 border-transparent hover:border-[#ff601c] hover:border-2 md:rounded-md"
                     >
-                      Trailer
+                      Watch Trailer
                     </Link>
                   </div>
                 </div>
