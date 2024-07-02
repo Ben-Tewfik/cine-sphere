@@ -28,7 +28,6 @@ export default function AppContext({ children }) {
   const [miniSearch, setMiniSearch] = useState([]);
   const [dataType, setDataType] = useState("movie");
   const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
-  const [mostPopularMovieId, setMostPopularMovieId] = useState("");
   const [mostPopularMovies, setMostPopularMovies] = useState([]);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
   // fetch movies
