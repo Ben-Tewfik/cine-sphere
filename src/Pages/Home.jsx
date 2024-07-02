@@ -4,9 +4,9 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import Card from "../components/Card/Card";
 import TvShowCard from "../components/TvShowCard/TvShowCard";
 import Hero from "../components/Hero/Hero";
-
+import ActorCard from "../components/ActorCard/ActorCard";
 export default function Home() {
-  const { trendingMovies, dataType, setDataType, setMovieQuery } =
+  const { trendingMovies, dataType, actors, setDataType, setMovieQuery } =
     useGlobalContext();
 
   return (
@@ -51,6 +51,23 @@ export default function Home() {
                 return <TvShowCard key={item.id} {...item} />;
               }
               return <Card key={item.id} {...item} />;
+            })}
+        </div>
+        <div className="my-8 flex justify-between items-center gap-4">
+          <h2 className="text-2xl">Popular Celebrities</h2>
+          <Link
+            to={`/actors`}
+            className="flex items-center justify-self-end text-[#ff601c] font-semibold"
+          >
+            View More <MdKeyboardArrowRight className="text-xl" />
+          </Link>
+        </div>
+        <div className="grid gap-6 grid-cols-auto-fill">
+          {actors
+            ?.sort((a, b) => b.popularity - a.popularity)
+            ?.slice(0, 12)
+            .map(item => {
+              return <ActorCard key={item.id} {...item} />;
             })}
         </div>
       </div>
