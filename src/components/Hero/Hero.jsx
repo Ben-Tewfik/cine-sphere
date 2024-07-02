@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 export default function Hero() {
   const { mostPopularMovies } = useGlobalContext();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
-  console.log(mostPopularMovies[0]);
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev();
   }, [emblaApi]);
@@ -19,10 +18,13 @@ export default function Hero() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
   return (
-    <div className="w-[90vw] mx-auto mb-4">
-      <div className="overflow-hidden w-full relative" ref={emblaRef}>
-        <div className="flex">
-          {mostPopularMovies?.map((movie, index) => {
+    <div className="w-[90vw] md:h-[70vh] rounded-lg mx-auto mb-8">
+      <div
+        className="overflow-hidden w-full rounded-lg h-full relative"
+        ref={emblaRef}
+      >
+        <div className="flex w-full h-full rounded-lg">
+          {mostPopularMovies?.map(movie => {
             const {
               backdrop_path,
               id,
@@ -30,6 +32,7 @@ export default function Hero() {
               title,
               vote_average,
               poster_path,
+              overview,
             } = movie;
             return (
               <Link
@@ -40,16 +43,16 @@ export default function Hero() {
                 <img
                   src={`${baseImgUrl}${backdrop_path}`}
                   alt=""
-                  className="block max-w-full h-auto object-cover rounded-lg "
+                  className="block w-full h-full object-cover rounded-lg "
                 />
-                <div className="absolute w-96 bg-black backdrop-filter backdrop-blur-lg opacity-80 rounded-lg p-2 m-2 left-0 bottom-0 flex gap-4 items-center">
+                <div className="absolute w-96 md:w-[700px] md:h-[250px] bg-black backdrop-filter backdrop-blur-lg opacity-80 rounded-lg p-2 md:p-6 m-2 left-0 bottom-0 md:left-14 md:bottom-1/2 md:translate-y-1/2 flex gap-4 items-center">
                   <img
                     src={`${baseImgUrl}${poster_path}`}
                     alt={`${title} poster image`}
-                    className="w-20 block rounded-lg"
+                    className="w-20 md:w-36 block rounded-lg"
                   />
-                  <div>
-                    <h1 className="text-2xl mb-4">{title}</h1>
+                  <div className="flex flex-col gap-2">
+                    <h1 className="text-2xl">{title}</h1>
                     <div className="flex items-center gap-2">
                       <h5>{release_date?.slice(0, 4)}</h5>
                       <span className="bg-[#ff601c] w-1 h-1 rounded-md"></span>
@@ -61,6 +64,17 @@ export default function Hero() {
                         /10
                       </h5>
                     </div>
+                    <p className="hidden md:block">
+                      {overview?.length > 130
+                        ? `${overview?.slice(0, 150)}...`
+                        : overview}
+                    </p>
+                    <Link
+                      to={`/movies/${id}`}
+                      className="hidden md:bg-[#ff601c] md:block md:py-1 md:px-4 md:w-20 md:rounded-md"
+                    >
+                      Trailer
+                    </Link>
                   </div>
                 </div>
               </Link>
