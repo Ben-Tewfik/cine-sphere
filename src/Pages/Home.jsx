@@ -116,6 +116,9 @@ export default function Home() {
               <h2 className="text-2xl">Latest Movies</h2>
               <Link
                 to={`/movies`}
+                onClick={() => {
+                  setDataType("movie"), setMovieQuery("movie/now_playing");
+                }}
                 className="flex items-center justify-self-end text-[#ff601c] font-semibold"
               >
                 View More <MdKeyboardArrowRight className="text-xl" />
@@ -140,6 +143,9 @@ export default function Home() {
               <h2 className="text-2xl">Latest Series</h2>
               <Link
                 to={`/tv-shows`}
+                onClick={() => {
+                  setDataType("tv"), setMovieQuery("tv/airing_today");
+                }}
                 className="flex items-center justify-self-end text-[#ff601c] font-semibold"
               >
                 View More <MdKeyboardArrowRight className="text-xl" />

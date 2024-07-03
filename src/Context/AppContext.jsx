@@ -1,11 +1,5 @@
 import axios from "axios";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { subMenu } from "../Utils/subMenu";
 const AppProvider = createContext();
 // const key = `${import.meta.env.REACT_APP_API_KEY}`;
