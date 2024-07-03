@@ -80,9 +80,7 @@ export default function Movie() {
     fetchCast();
     fetchSimilarMovie();
   }, [fetchCast, fetchMovie, fetchVideo, fetchSimilarMovie, id]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
+
   const {
     genres,
     overview,

@@ -46,7 +46,6 @@ export default function Actor() {
   useEffect(() => {
     fetchSingleActor();
     fetchActorMovies();
-    window.scrollTo(0, 0);
   }, [fetchSingleActor, fetchActorMovies]);
   const {
     biography,

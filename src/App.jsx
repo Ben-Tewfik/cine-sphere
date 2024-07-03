@@ -2,7 +2,12 @@ import Actors from "./Pages/Actors";
 import Home from "./Pages/Home";
 import Movies from "./Pages/Movies";
 import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import SubMenu from "./components/SubMenu/SubMenu";
 import Actor from "./Pages/Actor";
 import Movie from "./Pages/Movie";
@@ -11,11 +16,20 @@ import TvShow from "./Pages/TvShow";
 import SearchResults from "./components/SearchResults/SearchResults";
 import Genres from "./Pages/Genres";
 import Search from "./Pages/Search";
+import { useEffect } from "react";
 
 function App() {
+  const ScrollToTop = props => {
+    const location = useLocation();
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [location]);
+    return <>{props.children}</>;
+  };
   return (
-    <Router>
-      <main className="bg-[#0d0d0d] min-h-screen">
+    <main className="bg-[#0d0d0d] min-h-screen">
+      <Router>
+        <ScrollToTop />
         <Navbar />
         <SubMenu />
         <SearchResults />
@@ -30,8 +44,8 @@ function App() {
           <Route path="/genres" element={<Genres />} />
           <Route path="/search" element={<Search />} />
         </Routes>
-      </main>
-    </Router>
+      </Router>
+    </main>
   );
 }
 
