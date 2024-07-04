@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { key, baseURL, baseImgUrl } from "../Context/AppContext";
+import {
+  key,
+  baseURL,
+  baseImgUrl,
+  useGlobalContext,
+} from "../Context/AppContext";
 import { FaEye, FaInternetExplorer } from "react-icons/fa";
 import { CiCalendar } from "react-icons/ci";
 import { BsGenderAmbiguous } from "react-icons/bs";
@@ -15,6 +20,7 @@ export default function Actor() {
   const [actor, setActor] = useState({});
   const [movies, setMovies] = useState([]);
   const { id } = useParams();
+  const { closeSubMenu } = useGlobalContext();
 
   const fetchSingleActor = useCallback(async () => {
     setIsLoading(true);
@@ -58,12 +64,18 @@ export default function Actor() {
     profile_path,
     homepage,
   } = actor;
+  function hideSubMenu() {
+    closeSubMenu();
+  }
   if (isLoading) {
     return <Loader />;
   }
 
   return (
-    <section className="text-white min-h-screen w-[90vw] mx-auto py-10 overflow-hidden">
+    <section
+      onMouseOver={hideSubMenu}
+      className="text-white min-h-screen w-[90vw] mx-auto py-10 overflow-hidden"
+    >
       <h1 className="text-4xl font-bold mb-3 md:text-6xl">{name}</h1>
       <div className="mb-8 text-md text-[#F1dac4] flex items-center gap-x-4 md:text-xl">
         <p className="capitalize ">{gender !== 1 ? "actor" : "actress"}</p>

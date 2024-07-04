@@ -9,8 +9,14 @@ import { useEffect, useState } from "react";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
 export default function Home() {
-  const { trendingMovies, dataType, actors, setDataType, setMovieQuery } =
-    useGlobalContext();
+  const {
+    trendingMovies,
+    dataType,
+    closeSubMenu,
+    actors,
+    setDataType,
+    setMovieQuery,
+  } = useGlobalContext();
   const [latestMovies, setLatestMovies] = useState([]);
   const [latestShows, setLatestShows] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,9 +50,11 @@ export default function Home() {
     fetchLatestMovies();
     fetchLatestShows();
   }, []);
-
+  function hideSubMenu() {
+    closeSubMenu();
+  }
   return (
-    <section className="text-white pb-10">
+    <section className="text-white pb-10" onMouseOver={hideSubMenu}>
       <Hero />
       <div className="w-[90vw] mx-auto">
         <div className="mb-8 md:flex justify-between items-center gap-4">
