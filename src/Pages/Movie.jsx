@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { baseURL, key, baseImgUrl } from "../Context/AppContext";
+import {
+  baseURL,
+  key,
+  baseImgUrl,
+  useGlobalContext,
+} from "../Context/AppContext";
 import { FaStar } from "react-icons/fa";
 import { logoNotFound } from "../../public/Images";
 import Loader from "../components/Loader/Loader";
@@ -15,6 +20,7 @@ export default function Movie() {
   const [crew, setCrew] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const { id } = useParams();
+  const { closeSubMenu } = useGlobalContext();
   const movieUrl = `${baseURL}movie/${id}${key}&language=en-US`;
   const videoUrl = `${baseURL}movie/${id}/videos${key}&language=en-US`;
   const castUrl = `${baseURL}movie/${id}/credits${key}&language=en-US`;
@@ -95,6 +101,9 @@ export default function Movie() {
     vote_average: vote,
     vote_count,
   } = movie;
+  function hideSubMenu() {
+    closeSubMenu();
+  }
   if (isLoading) {
     return <Loader />;
   }
@@ -104,7 +113,10 @@ export default function Movie() {
   // find director
   const director = crew.find(item => item.job.toLowerCase() === "director");
   return (
-    <section className="text-white w-[90vw] mx-auto py-5 min-h-screen">
+    <section
+      onMouseOver={hideSubMenu}
+      className="text-white w-[90vw] mx-auto py-5 min-h-screen"
+    >
       <div>
         <h1 className="text-3xl font-bold mb-3 md:text-6xl">{title}</h1>
         <div className="mb-4 text-md text-[#F1dac4] flex items-center gap-x-4 md:text-xl">

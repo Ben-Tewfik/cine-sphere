@@ -1,7 +1,12 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { key, baseURL, baseImgUrl } from "../Context/AppContext";
+import {
+  key,
+  baseURL,
+  baseImgUrl,
+  useGlobalContext,
+} from "../Context/AppContext";
 import Loader from "../components/Loader/Loader";
 import { FaStar } from "react-icons/fa";
 import ISO6391 from "iso-639-1";
@@ -15,6 +20,7 @@ export default function TvShow() {
   const [cast, setCast] = useState([]);
   const [similarSeries, setSimilarSeries] = useState([]);
   const { id } = useParams();
+  const { closeSubMenu } = useGlobalContext();
   const tvShowUrl = `${baseURL}tv/${id}${key}&language=en-US`;
   const tvTrailerUrl = `${baseURL}tv/${id}/videos${key}&language=en-US`;
   const castUrl = `${baseURL}tv/${id}/credits${key}&language=en-US`;
@@ -85,6 +91,9 @@ export default function TvShow() {
     fetchCast();
     fetchSimilarSeries();
   }, [fetchTvShow, fetchTvTrailer, fetchCast, fetchSimilarSeries]);
+  function hideSubMenu() {
+    closeSubMenu();
+  }
   // loading state
   if (isLoading) {
     return <Loader />;
@@ -111,7 +120,10 @@ export default function TvShow() {
     ? `${first?.slice(0, 4)} -`
     : `${first?.slice(0, 4)} - ${last?.slice(0, 4)}`;
   return (
-    <section className="text-white w-[90vw] mx-auto py-5 min-h-screen">
+    <section
+      onMouseOver={hideSubMenu}
+      className="text-white w-[90vw] mx-auto py-5 min-h-screen"
+    >
       <div>
         <h1 className="text-3xl font-bold mb-3 md:text-6xl">{name}</h1>
         <div className="mb-4 text-md text-[#F1dac4] flex items-center gap-x-4 md:text-xl">
