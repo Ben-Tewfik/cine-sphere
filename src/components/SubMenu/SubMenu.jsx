@@ -35,7 +35,7 @@ export default function SubMenu() {
             to={`/${page.page}`}
             key={id}
             onClick={e => handleSubMenuLinks(e, name, movieLink, id)}
-            className="block hover:text-[#ff601c]"
+            className="block hover:text-[#ff601c] hover:transition-colors hover:duration-300"
           >
             {name}
           </Link>
