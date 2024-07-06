@@ -16,11 +16,11 @@ export default function Navbar() {
     const text = e.target.textContent;
     const position = e.target.getBoundingClientRect();
     const center = (position.left + position.right) / 2;
-    const bottom = position.bottom + 5;
+    const bottom = position.bottom;
     openSubMenu(text, { center, bottom });
   }
   function hideSubMenu(e) {
-    if (!e.target.classList.contains("link")) {
+    if (e.target.textContent === "Home" || e.target.textContent === "Actors") {
       closeSubMenu();
     }
   }
@@ -30,7 +30,7 @@ export default function Navbar() {
       className="sticky top-0 z-10 bg-[#141414] backdrop-filter backdrop-blur-lg opacity-80"
     >
       {/* nav center */}
-      <div className="w-[90vw] mx-auto flex justify-between py-6">
+      <div className="w-[90vw] py-6 mx-auto flex justify-between">
         {/* logo */}
         <Link
           to={"/"}
@@ -44,28 +44,28 @@ export default function Navbar() {
         </button>
         {/* other links */}
         <ul className="hidden md:flex grow items-center justify-center gap-4 text-xl text-[#F1dac4]">
-          <li>
+          <li className="hover:text-[#ff601c] hover:transition-colors hover:duration-300">
             <Link to={"/"}>Home</Link>
           </li>
           <li
             onMouseOver={displaySubMenu}
-            className="link cursor-default capitalize"
+            className="hover:text-[#ff601c] hover:transition-colors hover:duration-300 h-full flex items-center cursor-default capitalize"
           >
             genres
           </li>
           <li
             onMouseOver={displaySubMenu}
-            className="link cursor-default capitalize"
+            className="hover:text-[#ff601c] hover:transition-colors hover:duration-300 h-full flex items-center cursor-default capitalize"
           >
             movies
           </li>
           <li
             onMouseOver={displaySubMenu}
-            className="link cursor-default capitalize"
+            className="hover:text-[#ff601c] hover:transition-colors hover:duration-300 h-full flex items-center cursor-default capitalize"
           >
             tv-shows
           </li>
-          <li>
+          <li className="hover:text-[#ff601c] hover:transition-colors hover:duration-300 ">
             <Link to={"/actors"}>Actors</Link>
           </li>
         </ul>
