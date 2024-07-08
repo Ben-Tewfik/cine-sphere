@@ -5,7 +5,6 @@ const AppProvider = createContext();
 // const key = `${import.meta.env.REACT_APP_API_KEY}`;
 export const key = `?api_key=${import.meta.env.VITE_API_KEY}`;
 export const baseURL = `https://api.themoviedb.org/3/`;
-const peopleURL = `${baseURL}person/popular${key}&language=en-US&page=1`;
 export const baseImgUrl = "https://image.tmdb.org/t/p/w500";
 export default function AppContext({ children }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +22,12 @@ export default function AppContext({ children }) {
   const [dataType, setDataType] = useState("movie");
   const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
   const [mostPopularMovies, setMostPopularMovies] = useState([]);
+  const [pages, setPages] = useState(1);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
+  const peopleURL = `${baseURL}person/popular${key}&language=en-US&page=${pages}`;
+
+  // pages
+  const totalActorsPages = 500;
   // fetch movies
   const fetchMovies = async () => {
     setIsLoading(true);
@@ -79,10 +83,8 @@ export default function AppContext({ children }) {
   const fetchPeople = async () => {
     setIsLoading(true);
     try {
-      const {
-        data: { results },
-      } = await axios(peopleURL);
-      setActors(results);
+      const data = await axios(peopleURL);
+      setActors(data.data.results);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -125,7 +127,7 @@ export default function AppContext({ children }) {
 
   useEffect(() => {
     fetchPeople();
-  }, []);
+  }, [pages]);
 
   useEffect(() => {
     fetchMovies();
@@ -150,6 +152,20 @@ export default function AppContext({ children }) {
   function hideSearchResults() {
     if (showSearchList) {
       setShowSearchList(false);
+    }
+  }
+  // pagination function
+  function changePage(value) {
+    if (value === "first") {
+      setPages(1);
+    } else if (value === "prev") {
+      setPages(pages - 1);
+    } else if (value === "next") {
+      setPages(pages + 1);
+    } else if (value === "last") {
+      setPages(totalActorsPages);
+    } else {
+      setPages(value);
     }
   }
   return (
@@ -180,6 +196,8 @@ export default function AppContext({ children }) {
         dataType,
         setDataType,
         mostPopularMovies,
+        changePage,
+        pages,
       }}
     >
       {children}
