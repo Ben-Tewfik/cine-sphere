@@ -23,6 +23,7 @@ export default function AppContext({ children }) {
   const [movieQuery, setMovieQuery] = useState(`trending/movie/day`);
   const [mostPopularMovies, setMostPopularMovies] = useState([]);
   const [pages, setPages] = useState(1);
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const searchUrl = `${baseURL}search/multi${key}&query=${searchWord}&language=en-US&page=1`;
   const peopleURL = `${baseURL}person/popular${key}&language=en-US&page=${pages}`;
 
@@ -154,6 +155,13 @@ export default function AppContext({ children }) {
       setShowSearchList(false);
     }
   }
+  // sidebar functions
+  function openSidebar() {
+    setIsOpenSidebar(true);
+  }
+  function closeSidebar() {
+    setIsOpenSidebar(false);
+  }
   // pagination function
   function changePage(value) {
     if (value === "first") {
@@ -198,6 +206,9 @@ export default function AppContext({ children }) {
         mostPopularMovies,
         changePage,
         pages,
+        isOpenSidebar,
+        openSidebar,
+        closeSidebar,
       }}
     >
       {children}

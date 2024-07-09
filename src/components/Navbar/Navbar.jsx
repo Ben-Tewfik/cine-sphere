@@ -11,6 +11,7 @@ export default function Navbar() {
     hideSearchResults,
     setShowSearchList,
     fetchSearchMulti,
+    openSidebar,
   } = useGlobalContext();
   function displaySubMenu(e) {
     const text = e.target.textContent;
@@ -27,6 +28,7 @@ export default function Navbar() {
   return (
     <nav
       onMouseOver={hideSubMenu}
+      onClick={openSidebar}
       className="sticky top-0 z-10 bg-[#141414] backdrop-filter backdrop-blur-lg opacity-80"
     >
       {/* nav center */}
