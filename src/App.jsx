@@ -18,6 +18,7 @@ import Genres from "./Pages/Genres";
 import Search from "./Pages/Search";
 import { useEffect } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   const ScrollToTop = props => {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/genres" element={<Genres />} />
           <Route path="/search" element={<Search />} />
         </Routes>
+        <Footer />
       </Router>
     </main>
   );
