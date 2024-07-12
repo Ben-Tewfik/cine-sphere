@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { useGlobalContext } from "../../Context/AppContext";
+import { motion, useScroll } from "framer-motion";
 export default function Navbar() {
+  const { scrollYProgress } = useScroll();
   const {
     openSubMenu,
     closeSubMenu,
@@ -94,6 +96,10 @@ export default function Navbar() {
           </button>
         </form>
       </div>
+      <motion.div
+        style={{ scaleX: scrollYProgress }}
+        className="bg-[#ff601c] origin-left h-1 w-full"
+      ></motion.div>
     </nav>
   );
 }
