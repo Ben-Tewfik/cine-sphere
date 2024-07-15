@@ -1,4 +1,4 @@
 import noImage from "../public/noImage.png";
 import logoNotFound from "../public/logoNotFound.avif";
-
-export { noImage, logoNotFound };
+import tmdb from "../public/tmdb.svg";
+export { noImage, logoNotFound, tmdb };
